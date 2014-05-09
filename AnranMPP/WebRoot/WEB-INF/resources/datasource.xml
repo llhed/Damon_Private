@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DatasourceManager xmlVersion="20091224"><ConnectionMap><Connection name="con1" class="com.fr.data.impl.JDBCDatabaseConnection"><DatabaseAttr/><JDBCDatabaseAttr url="jdbc:sqlserver://localhost:1433;databaseName=AnRanMoni" driver="com.microsoft.sqlserver.jdbc.SQLServerDriver" user="sa" password="___0022007c0039" encryptPassword="true"><DBCPAttr/></JDBCDatabaseAttr></Connection></ConnectionMap></DatasourceManager>

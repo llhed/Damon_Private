@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.action.extension" value="do,action"></constant>
+	
+	<!-- ******************************客户端普通请求与跳转******************************* -->
+	<package name="default" namespace="/" extends="struts-default">
+	
+		 <action name="testAction_*" class="com.anran.mpp.actions.TestAction" method="{1}">
+        	<result name="success">/index.jsp</result>       	
+        </action>
+      	
+    </package>
+    
+
+</struts>
