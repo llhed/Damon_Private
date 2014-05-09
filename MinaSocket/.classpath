@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.lib.spring3.MYECLIPSE_SPRING30_CORE"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.lib.spring3.MYECLIPSE_SPRING30_Persistence_JDBC"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.lib.spring3.MYECLIPSE_SPRING30_Persistence_CORE"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.lib.spring3.MYECLIPSE_SPRING30_AOP"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/mongo-2.10.1.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/spring-data-commons-aspects-1.0.0.M2.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/spring-data-commons-core-1.0.0.RC1.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/spring-data-document-core-1.0.0.M2.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/spring-data-mongodb-1.0.0.M2.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/spring-data-mongodb-cross-store-1.0.0.M2.jar"/>
+	<classpathentry kind="lib" path="F:/MongoDB/mongodbdemo/lib/spring-data-mongodb-log4j-1.0.0.M2.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-core-2.0.7.jar" sourcepath="F:/Mina/apache-mina-2.0.7-src.zip"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-example-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-filter-compression-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-integration-beans-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-integration-jmx-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-integration-ognl-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-integration-xbean-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-statemachine-2.0.7.jar"/>
+	<classpathentry kind="lib" path="F:/Mina/apache-mina-2.0.7-bin/apache-mina-2.0.7/dist/mina-transport-apr-2.0.7.jar"/>
+	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/AnranMoniPro/WebRoot/WEB-INF/lib/msbase.jar"/>
+	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/AnranMoniPro/WebRoot/WEB-INF/lib/mssqlserver.jar"/>
+	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/AnranMoniPro/WebRoot/WEB-INF/lib/msutil.jar"/>
+	<classpathentry kind="lib" path="lib/mina-transport-serial-2.0.7.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

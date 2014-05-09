@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+          xmlns:context="http://www.springframework.org/schema/context"  
+          xmlns:mongo="http://www.springframework.org/schema/data/mongo"  
+          xsi:schemaLocation="http://www.springframework.org/schema/context   
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+          http://www.springframework.org/schema/data/mongo   
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd   
+          http://www.springframework.org/schema/beans   
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+
+	<!-- ************************SQLServer 链接配置*************************** -->
+	<bean id="springDSN"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"
+            value="com.microsoft.jdbc.sqlserver.SQLServerDriver">
+        </property>
+        <property name="url"
+            value="jdbc:microsoft:sqlserver://192.168.10.114:1433;databasename=AnRanMPP">
+        </property>
+        <property name="username" value="sa"></property>
+        <property name="password" value="123"></property>
+    </bean>
+
+    <bean id="jdbcTemplate"
+        class="org.springframework.jdbc.core.JdbcTemplate" abstract="false"
+        lazy-init="false" autowire="default" >
+        <property name="dataSource">
+            <ref bean="springDSN" />
+        </property>
+    </bean>
+
+
+
+	<!-- MongoDB Spring 数据整合 -->
+<!-- 	<mongo:mongo host="192.168.10.239" port="27017"></mongo:mongo>	
+	   <bean id="mongoTemplate" class="org.springframework.data.document.mongodb.MongoTemplate">   
+	    <constructor-arg ref="mongo"/>   
+	    <constructor-arg name="databaseName" value="db"/>   
+	    <constructor-arg name="defaultCollectionName" value="test" />   
+	  </bean>  -->
+	
+
+	
+	<!-- <bean id="mongoCollection" class="com.anran.mongoDB.MongoDBCollectionFactory">
+    	<property name="ip" value="192.168.10.239"></property>
+    	<property name="dbName" value="db"></property>
+    	<property name="port" value="27017"></property>
+    </bean> -->
+    
+	
+	<bean id="dataHandler" class="com.anran.socket.DataHandler">
+		<!-- <property name="mdbf" ref="mongoCollection"></property> -->
+		<!-- <property name="mongoTemplate" ref="mongoTemplate"></property>
+ -->		<property name="deviceWorkImmServices" ref="deviceWorkImmServices"></property>
+		<property name="personLocationImmServices" ref="personLocationImmServices"></property>
+	</bean> 
+	
+	
+	<!-- Socket工厂类 -->
+	<bean id="minaSocketFactory" class="com.anran.socket.MinaSocketFactory">
+		<property name="port" value="9001"></property>
+		<property name="dataHandler" ref="dataHandler"></property>
+	</bean>
+
+	<!-- spring && mina -->
+	 	<!-- executorFilter多线程处理 -->  
+    <bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter" />  
+      
+    <bean id="mdcInjectionFilter" class="org.apache.mina.filter.logging.MdcInjectionFilter">  
+        <constructor-arg value="remoteAddress" />  
+    </bean>
+
+	<bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">  
+        <constructor-arg>  
+        <bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" /> 
+        <!-- <bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" />-->  
+        <!-- 处理对象流时候用ObjectSerializationCodecFactory -->  
+        <!-- <bean class="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory" /> --> 
+
+	            
+        </constructor-arg>  
+    </bean>
+
+	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
+
+	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">  
+        <property name="filters">  
+            <map>  
+                <entry key="executor" value-ref="executorFilter" />  
+                <entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter" />  
+                <!-- <entry key="codecFilter" value-ref="codecFilter" />   -->
+                <entry key="loggingFilter" value-ref="loggingFilter" />  
+            </map>  
+        </property>  
+    </bean>
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">  
+        <property name="customEditors">  
+            <map>  
+                <entry key="java.net.SocketAddress">  
+                    <bean class="org.apache.mina.integration.beans.InetSocketAddressEditor" />  
+                </entry>  
+            </map>  
+        </property>  
+    </bean>
+
+     <!-- session config -->
+    <bean id="sessionConfig" factory-bean="ioAcceptor"
+        factory-method="getSessionConfig" >       
+        <property name="readerIdleTime" value="10"/>
+
+    </bean> 
+
+	<bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind">  
+        <property name="defaultLocalAddress" value=":9002" />  
+        <property name="handler" ref="dataHandler" />  
+        <property name="filterChainBuilder" ref="filterChainBuilder" />  
+        <property name="reuseAddress" value="true" />  
+    </bean>
+
+	<!-- 业务类属性注入 -->
+	<bean id="t_Sensor_ImmServices" class="com.anran.servicesImpl.T_Sensor_ImmServicesImpl" >
+		<property name="jdbcTemp" ref="jdbcTemplate"/>			
+	</bean>
+	<bean id="deviceWorkImmServices" class="com.anran.servicesImpl.DeviceWorkImmServicesImpl" >
+		<property name="jdbcTemp" ref="jdbcTemplate"/>			
+	</bean>
+	<bean id="personLocationImmServices" class="com.anran.servicesImpl.PersonLocationImmServicesImpl" >
+		<property name="jdbcTemp" ref="jdbcTemplate"/>			
+	</bean>
+	<bean id="nodeServicesImpl" class="com.anran.servicesImpl.NodeServicesImpl" >
+		<property name="jdbcTemp" ref="jdbcTemplate"/>			
+	</bean>
+	<bean id="personServices" class="com.anran.servicesImpl.PersonServicesImpl" >
+		<property name="jdbcTemp" ref="jdbcTemplate"/>			
+	</bean>
+	
+	
+</beans>
+
+
+
+
+
+
