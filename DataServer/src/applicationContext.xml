@@ -36,9 +36,7 @@
 
     
 	
-	<bean id="dataHandler" class="com.anran.socket.DataHandler">
-	
-	</bean> 
+
 	
 	
 	<!-- Socket工厂类 -->
@@ -66,12 +64,13 @@
 
 	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
 
-	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">  
-        <property name="filters">  
+	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+
+		<property name="filters">
             <map>  
                 <entry key="executor" value-ref="executorFilter" />  
                 <entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter" />  
-                <entry key="codecFilter" value-ref="codecFilter" />  
+                <!-- <entry key="codecFilter" value-ref="codecFilter" /> -->  
                 <entry key="loggingFilter" value-ref="loggingFilter" />  
             </map>  
         </property>  
@@ -101,7 +100,20 @@
         <property name="reuseAddress" value="true" />  
     </bean>
 
-
+	
+	<!-- 业务类 -->
+	<bean id = "commands" class="com.anran.servicesImpl.CommandsImpl"/>
+	<bean id = "positionStation" class="com.anran.servicesImpl.PositionStationImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="dataHandler" class="com.anran.socket.DataHandler">
+		<property name="commands" ref="commands"/>	
+		<property name = "positionStation" ref = "positionStation"/>	
+	</bean> 
+	
+	
+	
 	
 	
 </beans>

@@ -6,8 +6,49 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class CommandsImpl {
+import com.anran.services.Commands;
 
+public class CommandsImpl implements Commands{
+
+		
+	
+	/**
+	 * 计算清包命令
+	 * @param targetAdress 目标地址
+	 * @param packageNum 包编号
+	 * @return
+	 */
+	public  byte[] cleanDataPackageCommand(String[] targetAdress , String[] packageNum){
+		
+		ByteBuffer wholeCommand = ByteBuffer.allocate(21);
+		ByteBuffer command = ByteBuffer.allocate(13);
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x0f};
+		byte[] commandHead = {(byte)0x00, (byte)0x01};
+		byte[] commandTargetAdress = {(byte) Integer.parseInt(targetAdress[0], 16) , (byte) Integer.parseInt(targetAdress[1], 16)};
+		byte[] commandWord = {(byte)0x11};
+		byte[] commandPackageNum = {(byte)Integer.parseInt(packageNum[0], 16) , (byte)Integer.parseInt(packageNum[1], 16)};
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		
+		command.put(commandHead);
+		command.put(commandTargetAdress);
+		command.put(commandWord);
+		command.put(commandPackageNum);
+		command.put(commandServerTime);
+		
+		byte[] crc = this.CRCVerify(command);
+		
+		wholeCommand.put(commandFirst);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandTargetAdress);
+		wholeCommand.put(commandWord);
+		wholeCommand.put(commandPackageNum);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+	}
 	
 	
 	/**
@@ -17,9 +58,10 @@ public class CommandsImpl {
 	 */
 	public byte[] reqDataCommand(String[] targetAdress) {
 		
-		ByteBuffer wholeCommand = ByteBuffer.allocate(15);
+		ByteBuffer wholeCommand = ByteBuffer.allocate(21);
 		ByteBuffer command = ByteBuffer.allocate(13);
-					
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x0f};
 		byte[] commandHead = {(byte)0x00, (byte)0x01};
 		byte[] commandTargetAdress = {(byte) Integer.parseInt(targetAdress[0], 16) , (byte) Integer.parseInt(targetAdress[1], 16)};
 		byte[] commandInfo = {(byte)0x10 , (byte)0x00 , (byte)0x00};
@@ -33,9 +75,49 @@ public class CommandsImpl {
 		
 		
 		byte[] crc = this.CRCVerify(command);
+		wholeCommand.put(commandFirst);
 		wholeCommand.put(commandHead);
 		wholeCommand.put(commandTargetAdress);
 		wholeCommand.put(commandInfo);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+	}
+	
+	
+	
+	/**
+	 * 修改基站编号命令
+	 * @param oldStationNum 原基站编号
+	 * @param newStationNum 新基站编号
+	 * @return
+	 */
+	public byte[] getRenameStation(String[] oldStationNum , String[] newStationNum){
+		ByteBuffer wholeCommand = ByteBuffer.allocate(21);
+		ByteBuffer command = ByteBuffer.allocate(13); 
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x0f};
+		
+		byte[] commandHead = {(byte)0x00, (byte)0x01};
+		byte[] commandOldNum = {(byte)Integer.parseInt(oldStationNum[0], 16) , (byte)Integer.parseInt(oldStationNum[1], 16)};
+		byte[] commandWord = {(byte)0x14};
+		byte[] commandNewNum = {(byte)Integer.parseInt(newStationNum[0], 16) , (byte)Integer.parseInt(newStationNum[1], 16)};
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		command.put(commandHead);
+		command.put(commandOldNum);
+		command.put(commandWord);
+		command.put(commandNewNum);
+		command.put(commandServerTime);
+		
+		byte[] crc = this.CRCVerify(command);
+		
+		wholeCommand.put(commandFirst);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandOldNum);
+		wholeCommand.put(commandWord);
+		wholeCommand.put(commandNewNum);
 		wholeCommand.put(commandServerTime);
 		wholeCommand.put(crc);
 		
@@ -64,21 +146,13 @@ public class CommandsImpl {
 		return bb.array();
 	}
 	
-	@Test
-	public void testUnit() {
-		String[] str = {"00","11"};
-		byte[] result = this.reqDataCommand(str);
-		for(byte b : result){
-			System.out.print(b + ",");
-		}
-	}
+
 	
 	/**
 	 * 计算命令的CRC校验位
 	 * @param bb
 	 * @return
 	 */
-
 	public byte[] CRCVerify(ByteBuffer bb){
 		
 		byte[] crcBytes = new byte[2];
@@ -130,4 +204,56 @@ public class CommandsImpl {
 			0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,
 			0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78,
         };
+    
+    
+	@Test
+	public void testUnit() {
+			
+		String[] str = {"01","4c"};
+		String[] packageStr = {"00","04"};
+		byte[] result = this.cleanDataPackageCommand(str, packageStr);
+		for(byte b : result){
+			System.out.print( Integer.toHexString(Integer.valueOf(b))  + ",");
+		}
+	}
+	
+	@Test
+	public void testRename(){
+				
+		String[] oldStationNum = {"ff" , "ff"};
+		String[] newStationNum = {"01" , "4c"};
+		
+		byte[] result = this.getRenameStation(oldStationNum, newStationNum);
+		
+		for(byte b : result){
+			System.out.print( Integer.toHexString(Integer.valueOf(b))  + ",");
+		}
+		
+	}
+    
+	@Test
+	public void getData(){
+		
+		String[] targetAdress = {"01","4C"};
+		byte[] result = this.reqDataCommand(targetAdress );
+		
+		for(byte b : result){
+			System.out.print( Integer.toHexString(Integer.valueOf(b))  + ",");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
