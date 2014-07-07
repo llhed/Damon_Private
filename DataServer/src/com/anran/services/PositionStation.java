@@ -1,5 +1,7 @@
 package com.anran.services;
 
+import com.anran.pojo.PostionStationPojo;
+
 public interface PositionStation {
 
 	
@@ -10,7 +12,10 @@ public interface PositionStation {
 	 */
 	public String[] getStationNum(String ipAddress);
 	
-	
-	
+	/**
+	 * 插入基站信息
+	 * @param psp
+	 */
+	public void insertPositionImm(PostionStationPojo psp);
 	
 }

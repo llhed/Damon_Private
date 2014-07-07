@@ -10,7 +10,175 @@ import com.anran.services.Commands;
 
 public class CommandsImpl implements Commands{
 
+	
+
+	
+	/**
+	 * 读取所有基站数据
+	 * @return
+	 */
+	public byte[] getAllDataCommand(){
 		
+		ByteBuffer wholeCommand = ByteBuffer.allocate(21);
+		ByteBuffer command = ByteBuffer.allocate(13);
+		
+		byte[] commandFisrt = {(byte)0xee , (byte)0xee , (byte)0xee  , (byte)0xee  , (byte)0xaa , (byte)0x0f};
+		byte[] commandHead = {(byte)0x00 , (byte)0x01 , (byte)0x00 , (byte)0x00 , (byte)0x10 , (byte)0x00 , (byte)0x00};
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		command.put(commandHead);
+		command.put(commandServerTime);
+		
+		byte[] crc = CRCVerify(command);
+		
+		wholeCommand.put(commandFisrt);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+		
+	}
+	
+	/**
+	 * 取消所有报警状态
+	 * @return
+	 */
+	public byte[] cancelAllAlarm(){
+		
+		ByteBuffer wholeCommand = ByteBuffer.allocate(24);
+		ByteBuffer command = ByteBuffer.allocate(16);
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee  , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x12 };
+		byte[] commandHead = { (byte)0x00 , (byte)0x01 , (byte)0x00 , (byte)0x00 , (byte)0x01 , (byte)0x00 , (byte)0x00 , (byte)0x01 , (byte)0x00 , (byte)0x01};
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		command.put(commandHead);
+		command.put(commandServerTime);
+		byte[] crc = CRCVerify(command);
+		
+		wholeCommand.put(commandFirst);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+	}
+	
+	/**
+	 * 取消某张卡的报警状态
+	 * @param cardNumHigh
+	 * @param cardNumLow
+	 * @return
+	 */
+	public byte[] cancelPersonNum(String cardNumHigh , String cardNumLow){
+		
+		ByteBuffer wholeCommand = ByteBuffer.allocate(24);
+		ByteBuffer command = ByteBuffer.allocate(16);
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee  , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x12 };
+		byte[] commandHead = { (byte)0x00 , (byte)0x01 , (byte)0x00 , (byte)0x00 , (byte)0x01 };
+		byte[] commandPersonNum = {(byte)Integer.parseInt(cardNumHigh, 16), (byte)Integer.parseInt(cardNumLow, 16)};
+		byte[] commandEnd = {(byte)0x08 , (byte)0x00 , (byte)0x01};
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		command.put(commandHead);
+		command.put(commandPersonNum);
+		command.put(commandEnd);
+		command.put(commandServerTime);
+		
+		byte[] crc = CRCVerify(command);
+		
+		wholeCommand.put(commandFirst);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandPersonNum);
+		wholeCommand.put(commandEnd);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+	}
+	
+	/**
+	 * 向指定卡发送报警命令
+	 * @param commandWord 命令字
+	 * @param pCardHigh
+	 * @param pCardLow
+	 * @return
+	 */
+	public byte[] personCardAlarmCommand(String commandWord , String pCardHigh , String pCardLow){
+		
+		ByteBuffer wholeCommand = ByteBuffer.allocate(24);
+		ByteBuffer command = ByteBuffer.allocate(16);
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee  , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x12 };
+		byte[] commandHead = { (byte)0x00 , (byte)0x01 , (byte)0x00 , (byte)0x00 , (byte)0x01 };
+		byte[] commandCardNum = {(byte)Integer.parseInt(pCardHigh, 16) , (byte)Integer.parseInt(pCardLow, 16)};
+		byte[] alarmWord = {(byte)Integer.parseInt(commandWord, 16)};
+		byte[] commandEnd = {(byte)0x00 , (byte)0x01};
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		command.put(commandHead);
+		command.put(commandCardNum);
+		command.put(alarmWord);
+		command.put(commandEnd);
+		command.put(commandServerTime);
+		
+		byte[] crc = CRCVerify(command);
+		
+		wholeCommand.put(commandFirst);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandCardNum);
+		wholeCommand.put(alarmWord);
+		wholeCommand.put(commandEnd);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+	}
+	
+	
+	/**
+	 * 报警命令计算
+	 * @param targetAddress
+	 * @param alarmCategray
+	 * @return
+	 */
+	public byte[] alarmStationCommand(String stationHigh , String stationLow , String alarmCategray){
+		
+		ByteBuffer wholeCommand = ByteBuffer.allocate(24);
+		ByteBuffer command = ByteBuffer.allocate(16);
+		
+		byte[] commandFirst = {(byte)0xee , (byte)0xee , (byte)0xee , (byte)0xee , (byte)0xaa , (byte)0x12};
+		byte[] commandHead = {(byte)0x00, (byte)0x01};
+		byte[] commandTargetAdress = {(byte) Integer.parseInt(stationHigh, 16) , (byte) Integer.parseInt(stationLow, 16)};
+		byte[] commandWord = {(byte)0x01 , (byte)0x00  , (byte)0x00};
+		byte[] commandAlarm = {(byte)Integer.parseInt(alarmCategray, 16)};
+		byte[] commandEnd = {(byte)0x00 , (byte)0x01 };
+		byte[] commandServerTime = this.getServerDateTime();
+		
+		command.put(commandHead);
+		command.put(commandTargetAdress);
+		command.put(commandWord);
+		command.put(commandAlarm);
+		command.put(commandEnd);
+		command.put(commandServerTime);
+		
+		byte[] crc = CRCVerify(command);
+		
+		wholeCommand.put(commandFirst);
+		wholeCommand.put(commandHead);
+		wholeCommand.put(commandTargetAdress);
+		wholeCommand.put(commandWord);
+		wholeCommand.put(commandAlarm);
+		wholeCommand.put(commandEnd);
+		wholeCommand.put(commandServerTime);
+		wholeCommand.put(crc);
+		
+		return wholeCommand.array();
+		
+	}
+	
 	
 	/**
 	 * 计算清包命令
@@ -140,7 +308,7 @@ public class CommandsImpl implements Commands{
 		ByteBuffer bb =  ByteBuffer.allocate(dateTimeArray.length);
 		for(String str : dateTimeArray){	
 			
-			bb.put((byte) Integer.parseInt(str, 16));
+			bb.put((byte) Integer.parseInt(str , 16));
 		}
 			
 		return bb.array();
@@ -209,11 +377,10 @@ public class CommandsImpl implements Commands{
 	@Test
 	public void testUnit() {
 			
-		String[] str = {"01","4c"};
-		String[] packageStr = {"00","04"};
-		byte[] result = this.cleanDataPackageCommand(str, packageStr);
+		byte[] result = getAllDataCommand();
+		
 		for(byte b : result){
-			System.out.print( Integer.toHexString(Integer.valueOf(b))  + ",");
+			System.out.print( getByteHex(Integer.valueOf(b))  + " ");
 		}
 	}
 	
@@ -221,12 +388,12 @@ public class CommandsImpl implements Commands{
 	public void testRename(){
 				
 		String[] oldStationNum = {"ff" , "ff"};
-		String[] newStationNum = {"01" , "4c"};
+		String[] newStationNum = {"01" , "77"};
 		
 		byte[] result = this.getRenameStation(oldStationNum, newStationNum);
 		
 		for(byte b : result){
-			System.out.print( Integer.toHexString(Integer.valueOf(b))  + ",");
+			System.out.print( getByteHex(Integer.valueOf(b))  + " ");
 		}
 		
 	}
@@ -234,11 +401,41 @@ public class CommandsImpl implements Commands{
 	@Test
 	public void getData(){
 		
-		String[] targetAdress = {"01","4C"};
+		String[] targetAdress = {"01","77"};
 		byte[] result = this.reqDataCommand(targetAdress );
 		
 		for(byte b : result){
-			System.out.print( Integer.toHexString(Integer.valueOf(b))  + ",");
+			System.out.print( getByteHex(Integer.valueOf(b))  + " ");
+		}
+	}
+	
+	@Test
+	public void alarm(){
+		
+
+		byte[] result = this.alarmStationCommand("01", "55", "04") ;
+		
+		for(byte b : result){
+			System.out.print( getByteHex(Integer.valueOf(b))  + " ");
+		}
+	}
+	
+	@Test
+	public void cleanPackage(){
+		
+		String[] targetAdress = {"01","77"};
+		String[] packageNum = {"00" , "07"};
+		byte[] result = cleanDataPackageCommand(targetAdress, packageNum);
+		for(byte b : result){
+			System.out.print( getByteHex(Integer.valueOf(b))  + " ");
+		}
+	}
+	
+	@Test
+	public void cancelAlarm(){
+		byte[] result = cancelAllAlarm();
+		for(byte b : result){
+			System.out.print( getByteHex(Integer.valueOf(b))  + " ");
 		}
 	}
 	
@@ -246,14 +443,25 @@ public class CommandsImpl implements Commands{
 	
 	
 	
+	/**
+	 * 获得单字节的16进制字符串
+	 * 
+	 * @param intByte
+	 * @return
+	 */
+	private String getByteHex(int intByte) {
+
+		String strHex = Integer.toHexString(intByte);
+		if (intByte >= 0) {
+			return strHex.length() == 1 ? "0" + strHex : strHex;
+		} else {
+			return strHex.substring(strHex.length() - 2, strHex.length());
+		}
+
+	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
+
 	
 }

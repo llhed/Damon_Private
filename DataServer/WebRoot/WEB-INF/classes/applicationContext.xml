@@ -18,7 +18,7 @@
             value="com.microsoft.jdbc.sqlserver.SQLServerDriver">
         </property>
         <property name="url"
-            value="jdbc:microsoft:sqlserver://192.168.10.114:1433;databasename=AnRanMPP">
+            value="jdbc:microsoft:sqlserver://192.168.10.114:1433;databasename=AnRanMPPBeta">
         </property>
         <property name="username" value="sa"></property>
         <property name="password" value="123"></property>
@@ -32,20 +32,6 @@
         </property>
     </bean>
 
-
-
-    
-	
-	<bean id="dataHandler" class="com.anran.socket.DataHandler">
-	
-	</bean> 
-	
-	
-	<!-- Socket工厂类 -->
-	<bean id="minaSocketFactory" class="com.anran.socket.MinaSocketFactory">
-		<property name="port" value="9001"></property>
-		<property name="dataHandler" ref="dataHandler"></property>
-	</bean>
 
 	<!-- spring && mina -->
 	 	<!-- executorFilter多线程处理 -->  
@@ -66,12 +52,13 @@
 
 	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
 
-	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">  
-        <property name="filters">  
+	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+
+		<property name="filters">
             <map>  
                 <entry key="executor" value-ref="executorFilter" />  
                 <entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter" />  
-                <entry key="codecFilter" value-ref="codecFilter" />  
+                <!-- <entry key="codecFilter" value-ref="codecFilter" /> -->  
                 <entry key="loggingFilter" value-ref="loggingFilter" />  
             </map>  
         </property>  
@@ -91,7 +78,6 @@
     <bean id="sessionConfig" factory-bean="ioAcceptor"
         factory-method="getSessionConfig" >       
         <property name="readerIdleTime" value="10"/>
-        <property name="receiveBufferSize" value="1024"/>
     </bean> 
 
 	<bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind">  
@@ -101,9 +87,24 @@
         <property name="reuseAddress" value="true" />  
     </bean>
 
+	
+	<!-- 业务类 -->
+	<bean id = "commands" class="com.anran.servicesImpl.CommandsImpl"/>
+	<bean id = "positionStation" class="com.anran.servicesImpl.PositionStationImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	<bean id = "positionCardDataCommit" class = "com.anran.servicesImpl.PositionCardDataCommitImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="dataHandler" class="com.anran.socket.DataHandler">
+		<property name="commands" ref="commands"/>	
+		<property name = "positionStation" ref = "positionStation"/>
+		<property name="acceptor" ref = "ioAcceptor"></property>	
+		<property name="positionCardDataCommit" ref = "positionCardDataCommit"></property>
+	</bean> 
+	
 
-	
-	
 </beans>
 
 

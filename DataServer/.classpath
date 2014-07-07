@@ -3,28 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_6_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-core-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-example-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-filter-compression-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-integration-beans-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-integration-jmx-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-integration-ognl-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-integration-xbean-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-statemachine-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mina-transport-apr-2.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mongo-2.10.1.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/msbase.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/mssqlserver.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/msutil.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/slf4j-api-1.5.6.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/slf4j-log4j12-1.5.6.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/spring-data-commons-aspects-1.0.0.M2.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/spring-data-commons-core-1.0.0.RC1.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/spring-data-document-core-1.0.0.M2.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/spring-data-mongodb-1.0.0.M2.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/spring-data-mongodb-cross-store-1.0.0.M2.jar"/>
-	<classpathentry kind="lib" path="D:/MyEclipse/WorkSpace/MinaSocket/lib/spring-data-mongodb-log4j-1.0.0.M2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DataServerLib"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

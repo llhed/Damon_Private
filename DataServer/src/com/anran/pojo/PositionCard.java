@@ -6,9 +6,16 @@ public class PositionCard {
 	private String cardStatus;
 	private String ipAdress;
 	private String timeStamp;
+	private String compassNum;
 	
 	
 	
+	public String getCompassNum() {
+		return compassNum;
+	}
+	public void setCompassNum(String compassNum) {
+		this.compassNum = compassNum;
+	}
 	public String getCardNum() {
 		return cardNum;
 	}
