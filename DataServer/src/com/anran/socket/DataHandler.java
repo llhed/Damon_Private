@@ -21,13 +21,13 @@ import com.anran.services.PositionStation;
 
 public class DataHandler extends IoHandlerAdapter {
 
-	private Logger logger = Logger.getLogger(MinaTimeServer.class);
+	private Logger logger = Logger.getLogger(MinaTimeServer.class); //日志类
 
-	private Commands commands;
-	private String[] targetAdress;
-	private PositionStation positionStation;
-	private NioSocketAcceptor acceptor;
-	private PositionCardDataCommit positionCardDataCommit;
+	private Commands commands; //命令接口
+	private String[] targetAdress;  //目标地址
+	private PositionStation positionStation; //基站数据接口
+	private NioSocketAcceptor acceptor;  //socket适配器
+	private PositionCardDataCommit positionCardDataCommit;  //定位卡数据提交接口
 	
 	
 	
@@ -60,6 +60,7 @@ public class DataHandler extends IoHandlerAdapter {
 		this.commands = commands;
 	}
 
+	
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
 		session.setAttribute("ip", session.getRemoteAddress().toString());
@@ -106,8 +107,9 @@ public class DataHandler extends IoHandlerAdapter {
 	public void messageReceived(IoSession session, Object message) {
 		
 		if(positionCardDataCommit.isSendCommandIP(session.getRemoteAddress().toString())){
-			 
+			//从缓存中获得字节码
 			List<String> dataStrList = ananlayCommandBuf(message);
+			//如果有报警则发送报警命令
 			sendAlarmCommand(dataStrList, acceptor);
 			
 		}else{
@@ -126,11 +128,11 @@ public class DataHandler extends IoHandlerAdapter {
 							
 					packageNum = this.getPackageNum(dataStrList);
 					targetAddressNum = this.getTargetAddress(dataStrList);
-					
+					//输出控制台的调试信息
 					for(PositionCard pc : pCardList){
 						System.out.print(pc.getCardNum() + "," + pc.getCardStatus() + "," + pc.getTimeStamp() + "||" + pc.getCompassNum() + "||");
 					}
-
+					//清包命令
 					byte[] cleanPackage = commands.cleanDataPackageCommand(targetAddressNum, packageNum);
 
 					session.write(IoBuffer.wrap(cleanPackage));
@@ -359,7 +361,7 @@ public class DataHandler extends IoHandlerAdapter {
 						);
 				pc.setIpAdress(ipAdress);
 				pc.setTimeStamp(timeStamp);
-				if(pc.getCardNum().startsWith("10")){
+				if(pc.getCardNum().startsWith("1")){
 					pCardList.add(pc);
 				}
 				

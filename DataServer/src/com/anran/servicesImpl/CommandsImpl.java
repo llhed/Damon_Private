@@ -387,8 +387,8 @@ public class CommandsImpl implements Commands{
 	@Test
 	public void testRename(){
 				
-		String[] oldStationNum = {"ff" , "ff"};
-		String[] newStationNum = {"01" , "77"};
+		String[] oldStationNum = {"01" , "77"};
+		String[] newStationNum = {"01" , "66"};
 		
 		byte[] result = this.getRenameStation(oldStationNum, newStationNum);
 		

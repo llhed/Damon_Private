@@ -26,7 +26,7 @@ public class MinaTimeServer {
 	public static void main( String[] args ) throws IOException 
 	{ 
 		
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 //		MinaSocketFactory msf = (MinaSocketFactory) ctx.getBean("minaSocketFactory");
 //		msf.start();
 	} 

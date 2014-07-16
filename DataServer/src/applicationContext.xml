@@ -77,7 +77,7 @@
      <!-- session config -->
     <bean id="sessionConfig" factory-bean="ioAcceptor"
         factory-method="getSessionConfig" >       
-        <property name="readerIdleTime" value="10"/>
+        <property name="readerIdleTime" value="1"/>
     </bean> 
 
 	<bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind">  

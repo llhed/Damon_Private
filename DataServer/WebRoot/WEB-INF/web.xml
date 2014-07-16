@@ -17,7 +17,7 @@
 	
  
   <listener>
-    	<listener-class>com.anran.socket.MainServer</listener-class>
+    	<listener-class>com.anran.socket.MainDataServer</listener-class>
 	</listener>
 	
 	

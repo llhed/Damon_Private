@@ -24,7 +24,7 @@ public class MinaSocketFactory {
 	
 	private DataHandler dataHandler;
 	
-	//apache Ìá¹©µÄÏß³Ì³Ø£¬ÓÐ²ÎÊý¿ÉÒÔÉèÖÃ£¬µ«²»ÖªµÀÉèÖÃÊ²Ã´Ê±ºò±È½ÏºÃ£¬¾ÍÓÃÁËÄ¬ÈÏµÄ
+	//apache ï¿½á¹©ï¿½ï¿½ï¿½ß³Ì³Ø£ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê²Ã´Ê±ï¿½ï¿½È½ÏºÃ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ïµï¿½
 	private ExecutorService filterExecutor = new OrderedThreadPoolExecutor();
 	
 	
@@ -38,33 +38,33 @@ public class MinaSocketFactory {
 	}
 
 	public synchronized void start(){  
-        acceptor = new NioSocketAcceptor(Runtime.getRuntime()  
-                .availableProcessors());  
-          
-        acceptor.setReuseAddress(true);  
-        acceptor.getSessionConfig().setReadBufferSize(2048);  
-        acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE,  
-                10);  
-        // Decrease the default receiver buffer size  
-        ((SocketSessionConfig) acceptor.getSessionConfig())  
-                .setReceiveBufferSize(512);  
-  
-        MdcInjectionFilter mdcFilter = new MdcInjectionFilter();  
-  
-        acceptor.getFilterChain().addLast("mdcFilter", mdcFilter);  
-        acceptor.getFilterChain().addLast("threadPool",  
-                new ExecutorFilter(filterExecutor));//ÉèÖÃÏß³Ì³Ø£¬ÒÔÖ§³Ö¶àÏß³Ì  
-        acceptor.getFilterChain().addLast("codec",  
-                new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName("UTF-8"))));//Ð­Òé  
-        acceptor.getFilterChain().addLast("mdcFilter2", mdcFilter);  
-        acceptor.getFilterChain().addLast("logger", new LoggingFilter());  
-        acceptor.setHandler(dataHandler);//Äã×Ô¼ºµÄ´¦ÀíÀà  
-        
-        try{  
-        	acceptor.bind((new InetSocketAddress(port)));  
-        }catch(IOException e){  
-            e.printStackTrace();  
-        }  
+//        acceptor = new NioSocketAcceptor(Runtime.getRuntime()  
+//                .availableProcessors());  
+//          
+//        acceptor.setReuseAddress(true);  
+//        acceptor.getSessionConfig().setReadBufferSize(2048);  
+//        acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE,  
+//                10);  
+//        // Decrease the default receiver buffer size  
+//        ((SocketSessionConfig) acceptor.getSessionConfig())  
+//                .setReceiveBufferSize(512);  
+//  
+//        MdcInjectionFilter mdcFilter = new MdcInjectionFilter();  
+//  
+//        acceptor.getFilterChain().addLast("mdcFilter", mdcFilter);  
+//        acceptor.getFilterChain().addLast("threadPool",  
+//                new ExecutorFilter(filterExecutor));//ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì³Ø£ï¿½ï¿½ï¿½Ö§ï¿½Ö¶ï¿½ï¿½ß³ï¿½  
+//        acceptor.getFilterChain().addLast("codec",  
+//                new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName("UTF-8"))));//Ð­ï¿½ï¿½  
+//        acceptor.getFilterChain().addLast("mdcFilter2", mdcFilter);  
+//        acceptor.getFilterChain().addLast("logger", new LoggingFilter());  
+//        acceptor.setHandler(dataHandler);//ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½  
+//        
+//        try{  
+//        	acceptor.bind((new InetSocketAddress(port)));  
+//        }catch(IOException e){  
+//            e.printStackTrace();  
+//        }  
           
     }
 	
